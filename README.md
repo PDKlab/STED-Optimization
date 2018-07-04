@@ -5,7 +5,7 @@ This repo contains the software to perform online STED imaging optimization acco
 
 ## Documentation
 
-The documentation is available in the repository. Steps to build:
+Steps for building most recent documentation from the repository:
 - install [Sphinx](http://sphinx.pocoo.org)
 - change to the `doc` subfolder
 - type in `make html`
