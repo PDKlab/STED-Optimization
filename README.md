@@ -14,3 +14,8 @@ The documentation is available in the repository. Steps to build:
 ## Requirements
 
 - Python3
+
+
+## More tools
+
+- Download the [packaged GUI](https://goo.gl/) for configuring optimization!
