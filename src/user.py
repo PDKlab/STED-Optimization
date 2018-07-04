@@ -6,8 +6,6 @@ content.
 
 import numpy
 
-import matplotlib
-matplotlib.use("TkAgg")
 from matplotlib import gridspec, pyplot, widgets
 pyplot.ion()
 
@@ -25,13 +23,13 @@ class LinePicker:
     position of pixels covered by the line along with the associated line profile
     given an image.
 
-    :param pyplot.Figure figure: The matplotlib :class:`figure` used for display.
-    :param pyplot.Axis aximg: The figure axis displaying the image on which to trace the line.
-    :param pyplot.Axis axprofile: The figure axis displaying the profile of the line.
-    :param 2d-array img: The image displayed by `aximg`.
-    :param int minlen: The minimal length in pixels of the line.
-    :param list deltas: Pixels to consider for averaging above (negative) and
-                        below (positive) the line.
+    :param figure: The matplotlib :class:`figure` used for display.
+    :param aximg: The figure axis displaying the image on which to trace the line.
+    :param axprofile: The figure axis displaying the profile of the line.
+    :param img: The image displayed by `aximg`.
+    :param minlen: The minimal length in pixels of the line.
+    :param deltas: List of pixels to consider for averaging above (negative) and
+                   below (positive) the line.
     """
     def __init__(self, figure, aximg, axprofile, img, minlen, deltas=[0]):
         figure.canvas.mpl_connect("button_press_event", self.on_press)
@@ -114,35 +112,17 @@ class PointPicker:
         self.points.append((int(event.xdata), int(event.ydata)))
 
 
-# def get_line_profile(img):
-#     """This function uses the class :class:`LinePicker` to ask the user
-#     to select a line and return its profile based on a given image.
-#
-#     :param img: The image on which to select the line and compute profile.
-#     :return: The profile of the selected line.
-#     """
-#     fig = pyplot.figure(figsize=(6, 8))
-#     fig.canvas.set_window_title("Pick a line")
-#     gs = gridspec.GridSpec(2, 1, width_ratios=[1], height_ratios=[4, 1])
-#     aximg = pyplot.subplot(gs[0])
-#     aximg.imshow(img, interpolation=None, cmap="gray", vmax=0.4*numpy.max(img))
-#     axprofile = pyplot.subplot(gs[1])
-#     lp = LinePicker(fig, aximg, axprofile, img, 40)
-#     pyplot.show(block=True)
-#     return lp.profile
-
-
 def get_lines(img, n, maxratio=0.4, figsize=(10, 10), **kwargs):
     """This function uses the class :class:`LinePicker` to ask the user
     to select *n* lines and return the indices (in *img*) that they cover
     and associated profiles based on a given image.
 
-    :param 2d-array img: The image to compute the line profile.
-    :param int n: The number of lines to select.
-    :param float maxratio: The ratio of maximal image intensity used to define the
+    :param img: The image to compute the line profile.
+    :param n: The number of lines to select.
+    :param maxratio: The ratio of maximal image intensity used to define the
                      max colorbar value.
-    :param tuple figsize: The size of figure to display.
-    :param ``**kwargs``: This method also takes the keyword arguments for initializing :class:`LinePicker_`.
+    :param figsize: The size of figure to display.
+    :param `**kwargs`: This method also takes the keyword arguments for initializing :class:`LinePicker_`.
     :return: A list of line positions and profiles.
     """
     lines = []
@@ -168,8 +148,8 @@ def get_points(img, at_least_n, label=""):
     positions (indices in `img`).
 
     :param img: The image on which to select points.
-    :param int at_least_n: The minimum number of points to select.
-    :param str label: An additional sufffix for the window title.
+    :param at_least_n: The minimum number of points to select.
+    :param label: An additional sufffix for the window title.
     :return: A list of points positions.
     """
     points = []
@@ -194,9 +174,9 @@ def get_regions(at_least_n=1, config=None, overview=None):
     """Acquire an overview from a specific configuration, ask the user to select
     regions and return their offsets.
 
-    :param int at_least_n: The minimum number of regions to select.
-    :param specpy.Configuration config: The microscope configuration.
-    :param str overview: The name of the overview.
+    :param at_least_n: The minimum number of regions to select.
+    :param config: The microscope configuration.
+    :param overview: The name of the overview.
     :return: The offsets of the selected regions.
     """
     if config is None:
@@ -213,11 +193,11 @@ def select(thetas, objectives, with_time, totaltime, figsize=(10, 10)):
     """Asks the user to select the best option by clicking on the points from the
     :mod:`matplotlib` figure.
 
-    :param 2d-array thetas: The options sampled from the algorithms.
-    :param array/list objectives: A list of objectives name.
-    :param bool with_time: Wheter of not to consider *totaltime* as an objective.
-    :param array totaltime: The time it takes to take an image using each configuration in *thetas*.
-    :param tuple figsize: The size of figure to display.
+    :param thetas: A 2d-array of options sampled from the algorithms.
+    :param objectives: A list of objectives name.
+    :param with_time: (bool) Wheter of not to consider *totaltime* as an objective.
+    :param totaltime: An array of time for acquiring an image using each configuration in *thetas*.
+    :param figsize: The size of figure to display.
     :return: The index of the selected point.
     """
     print("Asking user to select best option...")
@@ -319,10 +299,10 @@ def give_score(confocal, sted, label, figsize=(10, 10)):
     on the STED image using the slider widget. The confocal image is shown as a
     comparaison to the user.
 
-    :param 2d-array confocal: A confocal image.
-    :param 2d-array sted: A sted image.
-    :param str label: The name of the objective.
-    :param tuplde figsize: The size of figure to display.
+    :param confocal: A confocal image.
+    :param sted: A sted image.
+    :param label: The name of the objective.
+    :param figsize: The size of figure to display.
     :return: The score of the image normalized between 0 and 1.
     """
     fig = pyplot.figure(figsize=figsize)

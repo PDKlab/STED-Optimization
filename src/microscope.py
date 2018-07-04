@@ -25,7 +25,7 @@ except ModuleNotFoundError as err:
 def get_config(message=None):
     '''Fetch and return the active configuration in Imspector.
 
-    :param str message: If defined, print the following message.
+    :param message: If defined, print the following message.
 
     :returns: The active configuration.
     :rtype: specpy.Configuration
@@ -40,7 +40,7 @@ def get_config(message=None):
 def get_params(conf):
     '''Fetch and return the parameters of a configuration object.
 
-    :param specpy.Configuration conf: A configuration object.
+    :param conf: A configuration object.
 
     :returns: A dict of parameters.
     :rtype: dict
@@ -51,8 +51,8 @@ def get_params(conf):
 def get_power(conf, laser_id):
     '''Fetch and return the power of a laser in a specific configuration.
 
-    :param specpy.Configuration conf: A configuration object.
-    :param int laser_id: ID of the laser in Imspector (starting from 0).
+    :param conf: A configuration object.
+    :param laser_id: Index of the laser in Imspector (starting from 0).
 
     :returns: The power (%).
     :rtype: float
@@ -65,7 +65,7 @@ def get_power(conf, laser_id):
 def get_pixelsize(conf):
     '''Fetch and return the pixel size in a specific configuration.
 
-    :param specpy.Configuration conf: A configuration object.
+    :param conf: A configuration object.
 
     :returns: Tuple of (x, y) pixel sizes (m).
     :rtype: tuple
@@ -78,7 +78,7 @@ def get_pixelsize(conf):
 def get_resolution(conf):
     '''Fetch and return the resolution in a specific configuration.
 
-    :param specpy.Configuration conf: A configuration object.
+    :param conf: A configuration object.
 
     :returns: Tuple of (x, y) resolutions (m).
     :rtype: tuple
@@ -91,7 +91,7 @@ def get_resolution(conf):
 def get_imagesize(conf):
     '''Fetch and return the image size in a specific configuration.
 
-    :param specpy.Configuration conf: A configuration object.
+    :param conf: A configuration object.
 
     :returns: Tuple of (x, y) image sizes (m).
     :rtype: tuple
@@ -104,7 +104,7 @@ def get_imagesize(conf):
 def get_offsets(conf):
     '''Fetch and return the offsets in a specific configuration.
 
-    :param specpy.Configuration conf: A configuration object.
+    :param conf: A configuration object.
 
     :returns: Tuple of (x, y) offsets.
     :rtype: tuple
@@ -117,7 +117,7 @@ def get_offsets(conf):
 def get_dwelltime(conf):
     '''Fetch and return the pixel dwell time in a specific configuration.
 
-    :param specpy.Configuration conf: A configuration object.
+    :param conf: A configuration object.
 
     :returns: The dwell time (s).
     :rtype: float
@@ -128,9 +128,9 @@ def get_dwelltime(conf):
 def get_overview(conf, overview=None, prefix="Overview "):
     '''Fetch and return the overview from Imspector.
 
-    :param specpy.Configuration conf: A configuration object.
-    :param str overview: The name of the overview.
-    :param str prefix: The prefix of the overview.
+    :param conf: A configuration object.
+    :param overview: The name of the overview. If `None`, ask the user to input it.
+    :param prefix: A prefix to add to the name of the overview if inputed by user.
 
     :returns: The overview image (2d-array)
     '''
@@ -143,7 +143,7 @@ def get_overview(conf, overview=None, prefix="Overview "):
 def set_offsets(conf, x, y):
     '''Set the offsets in a specific configuration.
 
-    :param specpy.Configuration conf: A configuration object.
+    :param conf: A configuration object.
     :param float x: The x offset.
     :param flaot y: The y offset.
     '''
@@ -154,8 +154,8 @@ def set_offsets(conf, x, y):
 def set_power(conf, power, laser_id):
     '''Set the power of a laser in a specific configuration.
 
-    :param specpy.Configuration conf: A configuration object.
-    :param int laser_id: ID of the laser in Imspector (starting from 0).
+    :param conf: A configuration object.
+    :param int laser_id: Imdex of the laser in Imspector (starting from 0).
     :param float power: Power of the laser in [0, 1].
     '''
     lasers = conf.parameters('ExpControl/lasers/power_calibrated')
@@ -166,7 +166,7 @@ def set_power(conf, power, laser_id):
 def set_dwelltime(conf, dwelltime):
     '''Set the pixel dwell time in a specific configuration.
 
-    :param specpy.Configuration conf: A configuration object.
+    :param conf: A configuration object.
     :param float dwelltime: Pixel dwell time (s).
     '''
     conf.set_parameters("ExpControl/scan/dwelltime", dwelltime)
@@ -175,9 +175,9 @@ def set_dwelltime(conf, dwelltime):
 def set_linestep(conf, linestep, step_id):
     '''Set the line step of a specific channel in a specific configuration.
 
-    :param specpy.Configuration conf: A configuration object.
-    :param int linestep: Line step.
-    :param int step_id: ID of the line step in Imspector (starting from 0).
+    :param conf: A configuration object.
+    :param int linestep: The number of repetition.
+    :param int step_id: Index of the line step in Imspector (starting from 0).
     '''
     step_values = conf.parameters("ExpControl/gating/linesteps/step_values")
     step_values[step_id] = linestep
@@ -188,7 +188,7 @@ def set_linestep(conf, linestep, step_id):
 def set_rescue_signal_level(conf, signal_level, channel_id):
     '''Set the RESCue signal level in a specific configuration.
 
-    :param specpy.Configuration conf: A configuration object.
+    :param conf: A configuration object.
     :param float signal_level: Signal level of RESCue.
     :param int channel_id: ID of the RESCue channel in Imspector (starting from 0).
     '''
@@ -201,9 +201,9 @@ def set_rescue_signal_level(conf, signal_level, channel_id):
 def set_rescue_strength(conf, strength, channel_id):
     '''Set the RESCue strength in a specific configuration.
 
-    :param specpy.Configuration conf: A configuration object.
+    :param conf: A configuration object.
     :param float strength: Strength of RESCue.
-    :param int channel_id: ID of the RESCue channel in Imspector (starting from 0).
+    :param int channel_id: Index of the RESCue channel in Imspector (starting from 0).
     '''
     channels = conf.parameters("ExpControl/rescue/channels")
     channels[channel_id]["strength"] = strength
@@ -213,9 +213,9 @@ def set_rescue_strength(conf, strength, channel_id):
 def acquire(conf):
     '''Activate the given configuration and acquire an image stack.
 
-    :param specpy.Configuration conf: A configuration object.
+    :param conf: A configuration object.
 
-    :return: List of images (2d-array) and the acquisition time (seconds).
+    :return: List of images and the acquisition time (seconds).
     '''
     measurement.activate(conf)
     start = time.time()

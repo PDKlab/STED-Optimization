@@ -102,8 +102,8 @@ class FWHM(Objective):
     :func:`utils.gaussian_fit`) on at least three line profiles using function
     :func:`user.get_lines`.
 
-    :param float pixelsize: Size of a pixel in a STED image (in nm).
-    :param **kwargs: This method also takes the keyword arguments for :func:`user.get_lines`.
+    :param pixelsize: Size of a pixel in a STED image (in nm).
+    :param `**kwargs`: This method also takes the keyword arguments for :func:`user.get_lines`.
     """
     def __init__(self, pixelsize, **kwargs):
         self.label = "FWHM (nm)"
@@ -144,7 +144,7 @@ class Autocorrelation(Objective):
     the value at the first maximum and the value at the first minimum following the first
     maximum, for
 
-    :param **kwargs: This method also takes the keyword arguments for :func:`user.get_lines`.
+    :param `**kwargs`: This method also takes the keyword arguments for :func:`user.get_lines`.
     """
     def __init__(self, **kwargs):
         self.label = "Autocorrelation"
@@ -168,7 +168,7 @@ class Score(Objective):
     the value at the first maximum and the value at the first minimum following the first
     maximum, for
 
-    :param **kwargs: This method also takes the keyword arguments for :func:`user.give_score`.
+    :param `**kwargs`: This method also takes the keyword arguments for :func:`user.give_score`.
     """
     def __init__(self, label, idx=0, **kwargs):
         self.label = label

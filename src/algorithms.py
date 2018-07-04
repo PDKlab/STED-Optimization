@@ -127,7 +127,7 @@ class Kernel_TS:
         
         :param action: A 2d array of locations.
         :param reward: A 1-D array of observations.
-        :param *args: Dummy parameter to handle functions of inheritated classes.
+        :param `*args`: Dummy parameter to handle functions of inheritated classes.
         """
         if self.X is None:
             self.X = numpy.asarray(action)

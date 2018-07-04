@@ -190,7 +190,7 @@ Here is the list of the unit of every parameter
 Dwelltime             s
 Exc/Power             %
 STED/Power            %
-Line_Sted             -
+Line_Step             -
 ====================  =====
 
 **Parameter set**
