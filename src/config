@@ -1,0 +1,24 @@
+autopref: {IP: sakami.gel.ulaval.ca, port: 5007}# IP is the server address, port is like a door to the program
+autoquality: {IP: sakami.gel.ulaval.ca, port: 5003}# sakami is Emile s computer at LVSN
+noise_ub_objectives: {Autocorrelation: 0.3, Bleach: 0.1, FRC: 0.1, FWHM: 5, Quality: 0.1,
+  Quality_Last: 0.1, Signal_Ratio: 2, Signal_SQRT: 2}
+objectives: {Autocorrelation: false, Bleach: true, FRC: false, FWHM: false, Quality: true,
+  Quality_Last: false, Signal_Ratio: false, Signal_SQRT: false, TotalTime: false}
+objectives_values: {FRC: 0.02, Signal_Ratio: 75, Signal_SQRT: 75}
+output:
+  folder: KernelTS_manual__tubulin_1
+  previous: [null]
+  saving_dir: C:\Users\abberior\Desktop\DATA\Flavie\2018-07-03 - Optimisation Papier
+params: {Dwelltime: true, Exc/Power: true, Line_Step: false, Rescue/Signal_Level: false,
+  Rescue/Strength: false, STED/Power: true}
+params_set: {Exc/Power: 4, Line_Step: 0, Rescue/Signal_Level: 0, Rescue/Strength: 0,
+  STED/Power: 5}
+params_space:
+  Dwelltime: [10.0e-06, 100.0e-06, 12]
+  Exc/Power: [0.01, 0.4, 12]
+  Line_Step: [10, 25, 2]
+  Rescue/Signal_Level: [5, 105, 10]
+  Rescue/Strength: [0.1, 10, 20]
+  STED/Power: [0.1, 0.6, 10]
+pseudo_points: true
+with_time: true
