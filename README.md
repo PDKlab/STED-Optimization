@@ -10,6 +10,12 @@ Steps for building the most recent documentation from the repository:
 - change to the `doc` subfolder
 - type in `make html`
 
+Otherwise, you can download it as a [ZIP archive](https://goo.gl/Cw6Sdm):
+- unzip
+- enter `html` folder
+- open file `index.html`in your favorite browser
+- navigate the documentation
+
 
 ## Requirements
 
