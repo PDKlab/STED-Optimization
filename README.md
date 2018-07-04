@@ -5,7 +5,7 @@ This repo contains the software to perform online STED imaging optimization acco
 
 ## Documentation
 
-Steps for building most recent documentation from the repository:
+Steps for building the most recent documentation from the repository:
 - install [Sphinx](http://sphinx.pocoo.org)
 - change to the `doc` subfolder
 - type in `make html`
@@ -18,4 +18,4 @@ Steps for building most recent documentation from the repository:
 
 ## More tools
 
-- Download the [packaged GUI](https://goo.gl/) for configuring optimization!
+- Download the [packaged GUI](https://goo.gl/kK59KP) for configuring optimization!
