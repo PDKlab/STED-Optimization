@@ -133,7 +133,10 @@ class Optimizer:
                     i_t = self.prefnet.predict(numpy.array(o_t).T)
                 i_t_fla = -1
             else:
-                i_t = user.select(o_t, self.objectives, self.with_time, totaltimes)
+                if len(self.objectives) > 1:
+                    i_t = user.select(o_t, self.objectives, self.with_time, totaltimes)
+                else:
+                    i_t = self.objectives[0].select_optimal(o_t)
                 i_t_fla = i_t
 
             p_t = self.space[i_t]

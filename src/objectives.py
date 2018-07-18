@@ -62,6 +62,7 @@ class Signal_Ratio(Objective):
     """
     def __init__(self, percentile):
         self.label = "Signal Ratio"
+        self.select_optimal = numpy.argmax
         self.percentile = percentile
 
     def evaluate(self, sted_stack, confocal_init, confocal_end, sted_fg, confocal_fg):
@@ -107,6 +108,7 @@ class FWHM(Objective):
     """
     def __init__(self, pixelsize, **kwargs):
         self.label = "FWHM (nm)"
+        self.select_optimal = numpy.argmin
         self.pixelsize = pixelsize
         self.kwargs = kwargs
 
@@ -148,6 +150,7 @@ class Autocorrelation(Objective):
     """
     def __init__(self, **kwargs):
         self.label = "Autocorrelation"
+        self.select_optimal = numpy.argmax
         self.kwargs = kwargs
 
     def evaluate(self, sted_stack, confocal_init, confocal_end, sted_fg, confocal_fg):
@@ -170,8 +173,9 @@ class Score(Objective):
 
     :param `**kwargs`: This method also takes the keyword arguments for :func:`user.give_score`.
     """
-    def __init__(self, label, idx=0, **kwargs):
+    def __init__(self, label, select_optimal=numpy.argmax, idx=0, **kwargs):
         self.label = label
+        self.select_optimal = select_optimal
         self.idx = idx
         self.kwargs = kwargs
 
@@ -182,6 +186,7 @@ class Score(Objective):
 class Bleach(Objective):
     def __init__(self):
         self.label = "Bleach"
+        self.select_optimal = numpy.argmin
 
     def evaluate(self, sted_stack, confocal_init, confocal_end, sted_fg, confocal_fg):
         signal_i = numpy.mean(confocal_init[confocal_fg])
@@ -191,20 +196,13 @@ class Bleach(Objective):
 
 
 class ScoreNet(Objective):
-    def __init__(self, label, net, idx=0):
+    def __init__(self, label, select_optimal=numpy.argmax, net, idx=0):
         self.label = label
         self.net = net
+        self.select_optimal = select_optimal
         self.idx = idx
 
     def evaluate(self, sted_stack, confocal_init, confocal_end, sted_fg, confocal_fg):
-        # width, height = sted_stack[0].shape
-        # mask_width = width // 2 // 2 // 2 // 2
-        # mask_height = height // 2 // 2 // 2 // 2
-        # mask = resize(sted_fg, (mask_width, mask_height))
-        # mask = (mask / numpy.sum(mask)) if numpy.sum(mask) > 0 else mask
-        # image to score and background mask
-        # img_mask = (utils.img2float(sted_stack[self.idx]), mask)
-        # score = self.net.predict(img_mask)
         score = self.net.predict((utils.img2float(sted_stack[self.idx]), utils.img2float(confocal_init)))
         print("Net", self.label, "score", score)
         return score
@@ -213,6 +211,7 @@ class ScoreNet(Objective):
 class FRC(Objective):
     def __init__(self, pixelsize):
         self.label = "FRC"
+        self.select_optimal = numpy.argmax
         self.pixelsize = pixelsize # µm
         self.max_spatialfreq = 1 / (2 * pixelsize) # 1/µm
 
