@@ -196,7 +196,7 @@ class Bleach(Objective):
 
 
 class ScoreNet(Objective):
-    def __init__(self, label, select_optimal=numpy.argmax, net, idx=0):
+    def __init__(self, label, net, select_optimal=numpy.argmax, idx=0):
         self.label = label
         self.net = net
         self.select_optimal = select_optimal
