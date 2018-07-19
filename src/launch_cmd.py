@@ -159,6 +159,8 @@ if __name__ == "__main__":
                 config["autopref"][key] = val
         OPT = Optimizer(config, config_conf, config_sted, autoquality=True, autopref=True, thrash_data=thrash_data)
 
+    with open(os.path.join(config["output"]["saving_dir"], config["output"]["folder"], "optimization_config"), "w") as f:
+        yaml.dump(config, f)
 
     # RUNS THE OPTIMIZATION ROUTINE
     more_regions = True
