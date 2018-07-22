@@ -36,7 +36,7 @@ class QualityNet:
         if isinstance(sted, str):
             sted = np.load(sted)
         
-        tosend = json.dumps({'img': sted,
+        tosend = json.dumps({'img': sted.tolist(),
                              'img-type': '{}'.format(sted.dtype)})
         print("Asking QualityNet...")
         r = requests.post(self.url, data=tosend)
