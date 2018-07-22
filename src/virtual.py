@@ -64,8 +64,9 @@ class QualityNet:
                              'img-type':'{}'.format(sted.dtype),
                              'mask': mask.tolist(),
                              'mask-type':'{}'.format(mask.dtype)})
+        print("Asking QualityNet...")
         r = requests.post(self.url, data=tosend)
-        print("VirtualNet call result", r.text)
+        print("QualityNet call result", r.text)
         return json.loads(r.text)['score']
 
 
@@ -79,5 +80,6 @@ class PrefNet:
     def predict(self, pair_set):
         pair_set2send = json.dumps({'pair_set':pair_set.astype(float).tolist(), 
                                'type':'{}'.format(pair_set.dtype)})
+        print("Asking PrefNet...")
         r = requests.post(self.url, data=pair_set2send)
         return json.loads(r.text)['good_pair']
