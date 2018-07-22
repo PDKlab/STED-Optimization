@@ -203,7 +203,7 @@ class ScoreNet(Objective):
         self.idx = idx
 
     def evaluate(self, sted_stack, confocal_init, confocal_end, sted_fg, confocal_fg):
-        score = self.net.predict((utils.img2float(sted_stack[self.idx]), utils.img2float(confocal_init)))
+        score = self.net.predict(utils.img2float(sted_stack[self.idx]))
         print("Net", self.label, "score", score)
         return score
 
