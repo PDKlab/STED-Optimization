@@ -94,12 +94,11 @@ class Optimizer:
         """
         imsize = microscope.get_imagesize(self.config_sted)
         if self.with_time:
+            idx = self.params_name.index("Dwelltime")
+            totaltimes = imsize[0] * imsize[1] * self.space[:, idx]
             if len(self.objectives) > 2:
                 print("WARNING: Disabling time objective because you have more than two objectives!")
-                totaltimes = imsize[0] * imsize[1] * microscope.get_dwelltime(self.config_sted)
-            else:
-                idx = self.params_name.index("Dwelltime")
-                totaltimes = imsize[0] * imsize[1] * self.space[:, idx]
+                self.with_time = False
         else:
             totaltimes = imsize[0] * imsize[1] * microscope.get_dwelltime(self.config_sted)
 
@@ -131,8 +130,8 @@ class Optimizer:
                     i_t = self.prefnet.predict(numpy.hstack((numpy.array(o_t).T, totaltimes[:, None])))
                 else:
                     i_t = self.prefnet.predict(numpy.array(o_t).T)
-                # i_t_fla = -1
-                i_t_fla = user.select(o_t, self.objectives, self.with_time, totaltimes) # for debug
+                i_t_fla = -1
+                # i_t_fla = user.select(o_t, self.objectives, self.with_time, totaltimes) # for debug
             else:
                 if len(self.objectives) > 1:
                     i_t = user.select(o_t, self.objectives, self.with_time, totaltimes)
