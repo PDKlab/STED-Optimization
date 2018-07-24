@@ -226,7 +226,11 @@ class Optimizer:
                 f.write("{},{}\n".format(self.t, ",".join(map(str, r_t))))
             with open(os.path.join(self.output, "Options", "choices"), "a") as f:
                 f.write("{},{},{}\n".format(self.t, i_t, i_t_fla))
-            numpy.savetxt(os.path.join(self.output, "Options", str(self.t)), numpy.array(o_t).T, delimiter=",")
+            if self.with_time:
+                options = numpy.hstack((numpy.array(o_t).T, totaltimes[:, None]))
+            else:
+                options = numpy.array(o_t).T
+            numpy.savetxt(os.path.join(self.output, "Options", str(self.t)), options, delimiter=",")
 
             self.t += 1
 
