@@ -73,13 +73,13 @@ class Optimizer:
         self.pseudo_points = self.config["pseudo_points"]
         self.previous = self.config["output"]["previous"]
         self.output = self.create_output_dir()
-        
-        if len(self.config["objectives"]) > 2 and self.with_time:
-            print("WARNING: Disabling time objective because you have more than two objectives!")
-            self.with_time = False
 
         # initialize objectives, parameters space, and pre-train algorithms on previous knowledge
         self.objectives, self.space, self.algos = self.configure_optimization()
+        
+        if len(self.objectives) > 2 and self.with_time:
+            print("WARNING: Disabling time objective because you have more than two objectives!")
+            self.with_time = False
 
         if self.autopref:
             self.prefnet = PrefNet(self.config["autopref"]["IP"], self.config["autopref"]["port"])
