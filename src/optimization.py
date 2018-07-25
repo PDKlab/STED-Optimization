@@ -74,8 +74,7 @@ class Optimizer:
         self.previous = self.config["output"]["previous"]
         self.output = self.create_output_dir()
         
-
-        if len(self.objectives) > 2 and self.with_time:
+        if len(self.config["objectives"]) > 2 and self.with_time:
             print("WARNING: Disabling time objective because you have more than two objectives!")
             self.with_time = False
 
