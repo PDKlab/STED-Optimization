@@ -73,6 +73,11 @@ class Optimizer:
         self.pseudo_points = self.config["pseudo_points"]
         self.previous = self.config["output"]["previous"]
         self.output = self.create_output_dir()
+        
+
+        if len(self.objectives) > 2 and self.with_time:
+            print("WARNING: Disabling time objective because you have more than two objectives!")
+            self.with_time = False
 
         # initialize objectives, parameters space, and pre-train algorithms on previous knowledge
         self.objectives, self.space, self.algos = self.configure_optimization()
@@ -92,15 +97,12 @@ class Optimizer:
         :param readjust: Boolean, wheter or not to readjust focus between the first
                          confocal and the STED image.
         """
-        imsize = microscope.get_imagesize(self.config_sted)
+        linestep = microscope.get_linestep(self.config_sted, self.config["params_set"]["Line_Step"])
         if self.with_time:
             idx = self.params_name.index("Dwelltime")
-            totaltimes = imsize[0] * imsize[1] * self.space[:, idx]
-            if len(self.objectives) > 2:
-                print("WARNING: Disabling time objective because you have more than two objectives!")
-                self.with_time = False
+            timesperpixel = linestep * self.space[:, idx]
         else:
-            totaltimes = imsize[0] * imsize[1] * microscope.get_dwelltime(self.config_sted)
+            timesperpixel = linestep * microscope.get_dwelltime(self.config_sted)
 
         regions = user.get_regions()
         for (x, y) in regions:
@@ -127,14 +129,14 @@ class Optimizer:
 
             if self.autopref:
                 if self.with_time:
-                    i_t = self.prefnet.predict(numpy.hstack((numpy.array(o_t).T, totaltimes[:, None])))
+                    i_t = self.prefnet.predict(numpy.hstack((numpy.array(o_t).T, timesperpixel[:, None])))
                 else:
                     i_t = self.prefnet.predict(numpy.array(o_t).T)
                 i_t_fla = -1
-                # i_t_fla = user.select(o_t, self.objectives, self.with_time, totaltimes) # for debug
+                # i_t_fla = user.select(o_t, self.objectives, self.with_time, timesperpixel) # for debug
             else:
                 if len(self.objectives) > 1:
-                    i_t = user.select(o_t, self.objectives, self.with_time, totaltimes)
+                    i_t = user.select(o_t, self.objectives, self.with_time, timesperpixel)
                 else:
                     i_t = self.objectives[0].select_optimal(o_t)
                 i_t_fla = i_t
@@ -146,7 +148,7 @@ class Optimizer:
             for label, value in zip(self.params_name, p_t):
                # using .item() to convert from Numpy type to standard Python type
                 self.params_set[label](self.config_sted, value.item())
-            stacks, totaltime = microscope.acquire(self.config_sted)
+            stacks, _ = microscope.acquire(self.config_sted)
             sted_stack = stacks[0]
             if len(stacks) > 1:
                 sted_stack_others = stacks[1:]
@@ -227,7 +229,7 @@ class Optimizer:
             with open(os.path.join(self.output, "Options", "choices"), "a") as f:
                 f.write("{},{},{}\n".format(self.t, i_t, i_t_fla))
             if self.with_time:
-                options = numpy.hstack((numpy.array(o_t).T, totaltimes[:, None]))
+                options = numpy.hstack((numpy.array(o_t).T, timesperpixel[:, None]))
             else:
                 options = numpy.array(o_t).T
             numpy.savetxt(os.path.join(self.output, "Options", str(self.t)), options, delimiter=",")
