@@ -125,7 +125,7 @@ def get_dwelltime(conf):
     return conf.parameters("ExpControl/scan/dwelltime")
 
 
-def get_linestep(conf, linestep, step_id):
+def get_linestep(conf, step_id):
     '''Fetch and return the line step of a specific channel in a specific configuration.
 
     :param conf: A configuration object.
