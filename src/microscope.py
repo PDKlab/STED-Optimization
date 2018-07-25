@@ -80,7 +80,7 @@ def get_resolution(conf):
 
     :param conf: A configuration object.
 
-    :returns: Tuple of (x, y) resolutions (m).
+    :returns: Tuple of (x, y) resolutions (image size in pixels).
     :rtype: tuple
     '''
     x = conf.parameters("ExpControl/scan/range/x/res")
