@@ -189,14 +189,15 @@ def get_regions(at_least_n=1, config=None, overview=None):
     return regions_offset
 
 
-def select(thetas, objectives, with_time, totaltime, figsize=(10, 10)):
+def select(thetas, objectives, with_time, times, figsize=(10, 10)):
     """Asks the user to select the best option by clicking on the points from the
-    :mod:`matplotlib` figure.
+    :mod:`matplotlib` figure. If several points overlap, select the one that minimizes
+    the time (or third objective).
 
     :param thetas: A 2d-array of options sampled from the algorithms.
     :param objectives: A list of objectives name.
-    :param with_time: (bool) Wheter of not to consider *totaltime* as an objective.
-    :param totaltime: An array of time for acquiring an image using each configuration in *thetas*.
+    :param with_time: (bool) Wheter of not to consider *times* as an objective.
+    :param times: An array of time for acquiring an image using each configuration in *thetas*.
     :param figsize: The size of figure to display.
     :return: The index of the selected point.
     """
@@ -212,12 +213,10 @@ def select(thetas, objectives, with_time, totaltime, figsize=(10, 10)):
 
     # 3 points tolerance
     if with_time:
-        sc = ax.scatter(thetas[0], thetas[1], s=100, c=totaltime, marker="o", alpha=0.5, picker=3,
-                        cmap=cmap)
+        sc = ax.scatter(thetas[0], thetas[1], s=100, c=times, marker="o", alpha=0.5, picker=3, cmap=cmap)
         pyplot.colorbar(sc, ax=ax)
     elif len(objectives) > 2:
-        sc = ax.scatter(thetas[0], thetas[1], s=100, c=thetas[2], marker="o", alpha=0.5, picker=3,
-                        cmap=cmap)
+        sc = ax.scatter(thetas[0], thetas[1], s=100, c=thetas[2], marker="o", alpha=0.5, picker=3, cmap=cmap)
         pyplot.colorbar(sc, ax=ax)
     else:
         ax.scatter(thetas[0], thetas[1], s=200, marker="o", alpha=0.5, picker=3)
@@ -235,12 +234,10 @@ def select(thetas, objectives, with_time, totaltime, figsize=(10, 10)):
 
         if with_time:
             sc.remove()
-            sc = ax2.scatter(thetas[0], thetas[1], s=100, c=totaltime, marker="o", alpha=0.5, picker=3,
-                             cmap=cmap)
+            sc = ax2.scatter(thetas[0], thetas[1], s=100, c=times, marker="o", alpha=0.5, picker=3, cmap=cmap)
         elif len(objectives) > 2:
             sc.remove()
-            sc = ax2.scatter(thetas[0], thetas[1], s=100, c=thetas[2], marker="o", alpha=0.5, picker=3,
-                             cmap=cmap)
+            sc = ax2.scatter(thetas[0], thetas[1], s=100, c=thetas[2], marker="o", alpha=0.5, picker=3, cmap=cmap)
         else:
             sc.remove()
             sc = ax2.scatter(thetas[0], thetas[1], s=200, marker="o", alpha=0.5, picker=3)
@@ -253,7 +250,7 @@ def select(thetas, objectives, with_time, totaltime, figsize=(10, 10)):
 
         if with_time:
             sc.remove()
-            sc = ax3.scatter(thetas[0], thetas[1], s=100, c=totaltime, marker="o", alpha=0.5, picker=3,
+            sc = ax3.scatter(thetas[0], thetas[1], s=100, c=times, marker="o", alpha=0.5, picker=3,
                              cmap=cmap)
         elif len(objectives) > 2:
             sc.remove()
@@ -273,8 +270,8 @@ def select(thetas, objectives, with_time, totaltime, figsize=(10, 10)):
         # handle the situation where several points overlap
         if with_time:
             print("Selected points:", event.ind)
-            min_z = numpy.min(totaltime[event.ind])
-            candidates = event.ind[totaltime[event.ind] == min_z]
+            min_z = numpy.min(times[event.ind])
+            candidates = event.ind[times[event.ind] == min_z]
         elif len(objectives) > 2:
             print("Selected points:", event.ind)
             # objectives are minimized (see objectives.py)
