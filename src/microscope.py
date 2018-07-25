@@ -125,6 +125,19 @@ def get_dwelltime(conf):
     return conf.parameters("ExpControl/scan/dwelltime")
 
 
+def get_linestep(conf, linestep, step_id):
+    '''Fetch and return the line step of a specific channel in a specific configuration.
+
+    :param conf: A configuration object.
+    :param step_id: Index of the laser in Imspector (starting from 0).
+    
+    :returns: The line step.
+    :rtype: int
+    '''
+    step_values = conf.parameters("ExpControl/gating/linesteps/step_values")
+    return step_values[step_id]
+
+
 def get_overview(conf, overview=None, prefix="Overview "):
     '''Fetch and return the overview from Imspector.
 
