@@ -147,10 +147,14 @@ def get_overview(conf, overview=None, prefix="Overview "):
 
     :returns: The overview image (2d-array)
     '''
-    if overview is None:
-        print("Type the name of the overview then press enter.")
-        overview = prefix + input()
-    return conf.stack(overview).data()[0][0]
+    while True:
+        try:
+            if overview is None:
+                print("Type the name of the overview then press enter.")
+                overview = prefix + input()
+            return conf.stack(overview).data()[0][0]
+        except:
+            print("The overview", overview, "does not exist!")
 
 
 def set_offsets(conf, x, y):
