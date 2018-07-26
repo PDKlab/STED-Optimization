@@ -142,21 +142,23 @@ def get_overview(conf, overview_name=None, prefix="Overview "):
     '''Fetch and return the overview from Imspector.
 
     :param conf: A configuration object.
-    :param overview: The name of the overview. If `None`, ask the user to input it.
+    :param overview_name: The name of the overview. If `None`, ask the user to input it.
     :param prefix: A prefix to add to the name of the overview if inputed by user.
 
     :returns: The overview image (2d-array)
     '''
-    found_overview = False
-    while not found_overview:
-        try:
-            if overview_name is None:
+    if overview_name is None:
+        found_overview = False
+        while not found_overview:
+            try:
                 print("Type the name of the overview then press enter.")
                 overview_name = prefix + input()
-            overview = conf.stack(overview_name).data()[0][0]
-            found_overview = True
-        except:
-            print("The overview", overview_name, "does not exist!")
+                overview = conf.stack(overview_name).data()[0][0]
+                found_overview = True
+            except:
+                print("The overview", overview_name, "does not exist!")
+    else:
+        overview = conf.stack(overview_name).data()[0][0]
     return overview
 
 

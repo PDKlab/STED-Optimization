@@ -170,18 +170,18 @@ def get_points(img, at_least_n, label=""):
     return points
 
 
-def get_regions(at_least_n=1, config=None, overview=None):
+def get_regions(at_least_n=1, config=None, overview_name=None):
     """Acquire an overview from a specific configuration, ask the user to select
     regions and return their offsets.
 
     :param at_least_n: The minimum number of regions to select.
     :param config: The microscope configuration.
-    :param overview: The name of the overview.
+    :param overview_name: The name of the overview.
     :return: The offsets of the selected regions.
     """
     if config is None:
         config = microscope.get_config("Setting configuration for overview")
-    img = microscope.get_overview(config, overview)
+    img = microscope.get_overview(config, overview_name)
     points = get_points(img, at_least_n, " subregions within the overview")
     regions = utils.points2regions(points, microscope.get_pixelsize(config), microscope.get_resolution(config))
     x_offset, y_offset = microscope.get_offsets(config)
