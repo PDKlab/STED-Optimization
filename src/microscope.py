@@ -138,7 +138,7 @@ def get_linestep(conf, step_id):
     return step_values[step_id]
 
 
-def get_overview(conf, overview=None, prefix="Overview "):
+def get_overview(conf, overview_name=None, prefix="Overview "):
     '''Fetch and return the overview from Imspector.
 
     :param conf: A configuration object.
@@ -147,14 +147,17 @@ def get_overview(conf, overview=None, prefix="Overview "):
 
     :returns: The overview image (2d-array)
     '''
-    while True:
+    found_overview = False
+    while not found_overview:
         try:
-            if overview is None:
+            if overview_name is None:
                 print("Type the name of the overview then press enter.")
-                overview = prefix + input()
-            return conf.stack(overview).data()[0][0]
+                overview_name = prefix + input()
+            overview = conf.stack(overview_name).data()[0][0]
+            found_overview = True
         except:
-            print("The overview", overview, "does not exist!")
+            print("The overview", overview_name, "does not exist!")
+    return overview
 
 
 def set_offsets(conf, x, y):
